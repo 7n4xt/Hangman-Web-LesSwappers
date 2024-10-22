@@ -5,38 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" href="/Style/CSS/index.css">
+
 </head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        text-decoration: none;
+    }
+
+    nav {
+        margin: 13px 10px;
+        background-color: rgb(139, 0, 0);
+        border-radius: 5px;
+    }
+
+    .Nav-style {
+        padding: 8px 30px;
+
+    }
+
+    a:link, a:visited {
+        color: white;
+        padding: 13px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.20s, border-radius 0.20s;
+    }
+
+    nav a:hover {
+        background-color: #4d0803;
+        border-radius: 12px;
+    }
+</style>
 
 <body>
-    <div class="Main_bg">
-        <header>
-            <div class="bar up">
-                <img src="/Style/home assets/header_img.jpg" alt="bar">
+    <header>
+
+    </header>
+    <div>
+        <nav>
+            <div class="Nav-style">
+                <a href="#">Home</a>
+                <a href="#">Rules</a>
+                <a href="#">Engines</a>
+                <a href="#">Scoreboard</a>
+                <a href="#">Develepores</a>
             </div>
-            <div class="Nav container">
-                <nav>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Start Game</a></li>
-                        <li><a href="#">Rules</a></li>
-                        <li><a href="#">Score Board</a></li>
-                        <li><a href="#">Developers</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-        <main>
-            <div class="Main container">
-                <h4>Welcome to Hang Engine</h4>
-                <img src="/Style/Hang engine logo.png" alt="Logo">
-                <img src="/Style/homeAssets/news_bg-trans.png" alt="info container">
-            </div>
-        </main>
+        </nav>
     </div>
-    <footer class="bar down">
-        <img src="/Style/home assets/footer_img.jpg" alt="bar">
-    </footer>
 </body>
 
 </html>
