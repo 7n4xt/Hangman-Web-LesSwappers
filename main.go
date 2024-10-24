@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	temp, tempErr := template.ParseGlob("Templates/*.html")
+	temp, tempErr := template.ParseFiles("/Templates/*.html")
 	if tempErr != nil {
 		fmt.Printf("Error loading templates: %s", tempErr.Error())
 		os.Exit(2)
@@ -16,6 +16,14 @@ func main() {
 	http.HandleFunc("/home", func(w http.ResponseWriter, r *http.Request) {
 
 		temp.ExecuteTemplate(w, "Home", nil)
+	})
+	http.HandleFunc("/rules", func(w http.ResponseWriter, r *http.Request) {
+
+		temp.ExecuteTemplate(w, "rules", nil)
+	})
+	http.HandleFunc("/engines", func(w http.ResponseWriter, r *http.Request) {
+
+		temp.ExecuteTemplate(w, "engines", nil)
 	})
 	http.ListenAndServe("localhost:8000", nil)
 }
