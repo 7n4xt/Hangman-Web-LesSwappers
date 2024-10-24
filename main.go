@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	temp, tempErr := template.ParseFiles("/Templates/*.html")
+	temp, tempErr := template.ParseGlob("Templates/*.html")
 	if tempErr != nil {
 		fmt.Printf("Error loading templates: %s", tempErr.Error())
 		os.Exit(2)
@@ -25,5 +25,5 @@ func main() {
 
 		temp.ExecuteTemplate(w, "engines", nil)
 	})
-	http.ListenAndServe("localhost:8000", nil)
+	http.ListenAndServe("localhost:8080", nil)
 }
