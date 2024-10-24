@@ -83,6 +83,7 @@
         }
 
         main h2 {
+            text-shadow: 0 0 10px rgba(0, 153, 255, 0.248);
             text-align: center;
             width: 580px;
         }
@@ -105,23 +106,118 @@
             box-shadow: 0 5px 15px rgba(0, 161, 164, 0.3);
         }
 
-        main2 {
+        .rules-container {
             display: flex;
             justify-content: center;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
         }
 
-        main2 h2 {
+        .rules {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rules h2 {
             text-align: center;
-            margin-top: 25px;
+            color: rgb(0, 0, 0);
             font-size: 35px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
         }
 
         .rules-description {
-           color: rgba(60, 58, 58, 1);
+            color: rgba(0, 0, 0, 0.645);
             font-family: "Turret Road";
             margin-top: 15px;
+            margin-bottom: 30px;
             text-align: center;
             width: 500px;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 100px;
+            margin-top: 10px;
+            padding: 40px 0px;
+            transition: all 0.3s;
+        }
+
+        .rules-box {
+            background: linear-gradient(135deg, rgba(0, 112, 146, 0.2) 0%, rgba(0, 43, 78, 0.4) 100%);
+            border: 1px solid rgba(0, 155, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(0, 155, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .rules-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .rules-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 155, 255, 0.5), transparent);
+        }
+
+        .rules-box h3 {
+            color: #03ffea;
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rules-list li {
+            color: rgba(0, 0, 0, 0.645);
+            font-family: "Turret Road";
+            font-size: 18px;
+            margin: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .rules-list li::before {
+            content: "›";
+            position: absolute;
+            left: 0;
+            color: #01ffea;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rules-description {
+                width: 100%;
+                padding: 0 20px;
+            }
         }
     </style>
 </head>
@@ -148,15 +244,35 @@
                 </div>
         </div>
     </main>
-
     <main2>
-        <div class="rules">
-            <h2>Rules of the Game</h2>
-            <p class="rules-description">the rules are basically the same as the hangman game, so you can just skip this
-                part, its just for design lol.</p>
+        <div class="rules-container">
+            <div class="rules">
+                <h2>Rules of the Game</h2>
+                <p class="rules-description">the rules are basically the same as the hangman game, so you can just skip
+                    this part, its just for design lol.</p>
+                <div class="rules-grid">
+                    <div class="rules-box">
+                        <h3>How to Play</h3>
+                        <ul class="rules-list">
+                            <li>You have 6 attempts to save the engine</li>
+                            <li>Each wrong letter costs 1 attempt</li>
+                            <li>Guessing the wrong word costs 2 attempts</li>
+                            <li>Words are related to engines and mechanics</li>
+                        </ul>
+                    </div>
+                    <div class="rules-box">
+                        <h3>Winning & Losing</h3>
+                        <ul class="rules-list">
+                            <li>Win by saving the a engine through correct guesses</li>
+                            <li>Each engine brings a harder challenge</li>
+                            <li>Lose if you run out of attempts</li>
+                            <li>Don't let the engine fall from the hoist!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </main2>
-
 </body>
 
 </html>
