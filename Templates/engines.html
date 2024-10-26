@@ -14,66 +14,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Turret+Road:wght@200;300;400;500;700;800&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="/Style/CSS/engines.css">
 </head>
-<style>
-    * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        text-decoration: none;
-        font-family: "Orbitron", sans-serif;
-        font-weight: bold;
-    }
 
-    .nav-container {
-        padding: 13px 10px;
-        position: sticky;
-        top: 0;
-        overflow: hidden;
-    }
-
-    .nav-style {
-        background: linear-gradient(135deg, #009b8e 0%, #007092 100%);
-        border-radius: 7px;
-        padding: 15px 25px;
-        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    .menu {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-    .menu a {
-        color: white;
-        padding: 5px 10px;
-        text-align: center;
-        text-decoration: none;
-        border-radius: 10px;
-        transition: padding 0.3s, background-color 0.3s, opacity 0.1s, transform 0.1s;
-    }
-
-    .menu a:hover {
-        background-color: #00c3b2;
-        padding: 5px 25px;
-
-    }
-
-    .menu a:active {
-        opacity: 0.5;
-        transform: translateY(3px);
-    }
-
-    h2 {
-        font-size: 40px;
-        margin-top: 38px;
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        text-shadow: 0 0 10px rgba(0, 153, 255, 0.359);;
-    }
-</style>
 
 <body>
     <nav class="nav-container">
@@ -87,13 +30,42 @@
         </div>
     </nav>
     <main>
-        <h2 class="car-engines">
-            Car Engines
-        </h2>
-    <div class="container">
-
-    </div>
-        <div></div>
+        <div class="header-container">
+            <h2>
+                Car Engines
+            </h2>
+            <div class="h2-description">
+                <p class="description">This page serves as a mini Wikipedia, providing you with detailed information on
+                    the engines
+                    you'll be swapping. Check out the specs and insights below to get familiar with each option. </p>
+            </div>
+            <div class="engine-grid">
+                <div class="engine-box">
+                    <img src="/Style/EnginesPng/render_01-removebg.png" alt="">
+                    <ul class="engine-name">
+                        <li>K20A</li>
+                    </ul>
+                </div>
+                <div class="engine-box">
+                    <img src="/Style/EnginesPng/2015-Chevrolet-Corvette-Z06-LT4-Engine-removebg-preview.png" alt="">
+                    <ul class="engine-name">
+                        <li>LT4 Supercharged</li>
+                    </ul>
+                </div>
+                <div class="engine-box">
+                    <img src="/Style/EnginesPng/m156_01-removebg-preview.png" alt="">
+                    <ul class="engine-name">
+                        <li>M156</li>
+                    </ul>
+                </div>
+                <div class="engine-box">
+                    <img src="/Style/EnginesPng/7e59002d65f594269aa4dc3237431e1c220d29e6_xlarge-removebg-preview.png" alt="">
+                    <ul class="engine-name">
+                        <li>13B-T</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 
