@@ -21,6 +21,7 @@
       text-decoration: none;
       font-family: "Turret Road", sans-serif;
       font-weight: bold;
+      list-style: none;
     }
 
     body {
@@ -30,15 +31,19 @@
       min-height: 100vh;
       background: linear-gradient(45deg, #000428, #004e92);
       color: #fff;
+      background-image: url(/Style/homeAssets/DALL·E\ 2024-10-27\ 14.30.18\ -\ A\ web\ background\ inspired\ by\ the\ video\ game\ Need\ for\ Speed_\ Most\ Wanted\ \(2005\).jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
     h2 {
       font-size: 3rem;
       text-align: center;
       color: #fff;
-      text-shadow: 0 0 10px rgba(0, 155, 255, 0.5),
-        0 0 20px rgba(0, 155, 255, 0.3),
-        0 0 30px rgba(0, 155, 255, 0.2);
+      text-shadow: 0 0 10px rgba(0, 221, 255, 0.5),
+        0 0 20px rgba(0, 247, 255, 0.3),
+        0 0 30px rgba(0, 242, 255, 0.2);
       letter-spacing: 4px;
       font-family: "Orbitron", sans-serif;
       margin-bottom: 20px;
@@ -70,11 +75,11 @@
       flex-direction: column;
       align-items: center;
       backdrop-filter: blur(10px);
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(8, 0, 0, 0.286);
       border-radius: 20px;
       padding: 40px;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      box-shadow: 0 8px 32px 0 rgba(31, 118, 135, 0.37);
     }
 
     .input-group {
@@ -143,18 +148,33 @@
       border-radius: 25px;
       transition: all 0.3s ease;
       margin: 0;
-      margin-top: 50px;
+      margin-top: 30px;
       color: white;
       font-size: 1.5rem;
       text-transform: uppercase;
       border: none;
       font-family: "Orbitron";
+      cursor: pointer;
     }
 
+    button:last-child {
+      background: linear-gradient(135deg, #ff3636 0%, #b80000 100%);
+      
+    }
+
+    button:last-child a {
+      color: white;
+      text-decoration: none;
+      font-family: "Orbitron" ;
+    }
 
     button:hover {
       transform: scale(1.05);
       box-shadow: 0 5px 15px rgba(0, 161, 164, 0.3);
+    }
+
+    button:last-child:hover {
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
     }
 
     .play:active {
@@ -186,6 +206,7 @@
           </select>
         </div>
         <button type="submit">Start Game</button>
+        <button><a href="/home">Go back</a></button>
       </div>
     </form>
   </div>
