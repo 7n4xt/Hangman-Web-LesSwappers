@@ -8,7 +8,7 @@
 }
 
 body {
-  background-image: url(/Style/homeAssets/Picsart_24-10-26_18-01-06-322.jpg);
+  background-image: url(/Style/homeAssets/Background\ homepage.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -80,11 +80,11 @@ body {
 }
 
 main h2 {
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(2px);
   text-shadow: 0 0 10px rgba(140, 0, 255, 0.534);
   text-align: center;
   width: 620px;
-  background-color: rgba(0, 0, 0, 0.4);
+ 
   color: rgb(255, 255, 255);
   border-radius: 10px;
   font-size: 1.5em;

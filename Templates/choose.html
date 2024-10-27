@@ -1,3 +1,4 @@
+{{define "choose"}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,178 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Turret+Road:wght@200;300;400;500;700;800&display=swap"
     rel="stylesheet">
-  <style>
-    * {
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-      text-decoration: none;
-      font-family: "Turret Road", sans-serif;
-      font-weight: bold;
-      list-style: none;
-    }
-
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: linear-gradient(45deg, #000428, #004e92);
-      color: #fff;
-      background-image: url(/Style/homeAssets/DALL·E\ 2024-10-27\ 14.30.18\ -\ A\ web\ background\ inspired\ by\ the\ video\ game\ Need\ for\ Speed_\ Most\ Wanted\ \(2005\).jpg);
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-
-    h2 {
-      font-size: 3rem;
-      text-align: center;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(0, 221, 255, 0.5),
-        0 0 20px rgba(0, 247, 255, 0.3),
-        0 0 30px rgba(0, 242, 255, 0.2);
-      letter-spacing: 4px;
-      font-family: "Orbitron", sans-serif;
-      margin-bottom: 20px;
-      animation: glow 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes glow {
-      from {
-        text-shadow: 0 0 10px rgba(0, 155, 255, 0.5),
-          0 0 20px rgba(0, 155, 255, 0.3),
-          0 0 30px rgba(0, 155, 255, 0.2);
-      }
-
-      to {
-        text-shadow: 0 0 20px rgba(0, 155, 255, 0.7),
-          0 0 30px rgba(0, 155, 255, 0.5),
-          0 0 40px rgba(0, 155, 255, 0.3);
-      }
-    }
-
-    .forum-container {
-      width: 100%;
-      max-width: 600px;
-      margin: 20px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      background: rgba(8, 0, 0, 0.286);
-      border-radius: 20px;
-      padding: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px 0 rgba(31, 118, 135, 0.37);
-    }
-
-    .input-group {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .input,
-    .select {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-    }
-
-    label {
-      font-size: 1.8rem;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(0, 155, 255, 0.3);
-    }
-
-    .rounded-corners {
-      width: 100%;
-      max-width: 300px;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 25px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .rounded-corners:focus {
-      outline: none;
-      box-shadow: 0 0 15px rgba(0, 155, 255, 0.5);
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    select {
-      width: 100%;
-      max-width: 300px;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 25px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-size: 1.1rem;
-      cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    select option {
-      background: #004e92;
-      color: #fff;
-    }
-
-    button {
-      background: linear-gradient(135deg, #02c1b1 0%, #0091be 100%);
-      padding: 15px 35px;
-      border-radius: 25px;
-      transition: all 0.3s ease;
-      margin: 0;
-      margin-top: 30px;
-      color: white;
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      border: none;
-      font-family: "Orbitron";
-      cursor: pointer;
-    }
-
-    button:last-child {
-      background: linear-gradient(135deg, #ff3636 0%, #b80000 100%);
-      
-    }
-
-    button:last-child a {
-      color: white;
-      text-decoration: none;
-      font-family: "Orbitron" ;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(0, 161, 164, 0.3);
-    }
-
-    button:last-child:hover {
-      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
-    }
-
-    .play:active {
-      transform: scale(0.9)
-    }
-
-    ::placeholder {
-      color: rgba(255, 255, 255, 0.5);
-    }
-  </style>
+<link rel="stylesheet" href="/Style/CSS/choose.css">
 </head>
 
 <body>
@@ -206,10 +36,11 @@
           </select>
         </div>
         <button type="submit">Start Game</button>
-        <button><a href="/home">Go back</a></button>
+        <button><a href="/index">Go back</a></button>
       </div>
     </form>
   </div>
 </body>
 
 </html>
+{{end}}
