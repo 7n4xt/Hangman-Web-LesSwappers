@@ -13,13 +13,11 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  min-height: 100vh;
+  min-height: 80vh;
 }
 
 .nav-container {
   padding: 8px 10px;
-  position: sticky;
-  top: 0;
   overflow: hidden;
   margin: 10px;
 }
@@ -71,7 +69,7 @@ main {
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.4);
   border-radius: 40px;
-  margin-top: 60px;
+  margin-top: 0px;
 
 }
 
