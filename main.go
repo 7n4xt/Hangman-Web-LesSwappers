@@ -29,10 +29,15 @@ func chooseHandler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "choose", nil)
 }
 
+func gameHandler(w http.ResponseWriter, r *http.Request) {
+	templates.ExecuteTemplate(w, "game", nil)
+}
+
 func main() {
 	http.HandleFunc("/index", homeHandler)
 	http.HandleFunc("/engines", enginesHandler)
 	http.HandleFunc("/choose", chooseHandler)
+	http.HandleFunc("/game", gameHandler)
 
 	fileServer := http.FileServer(http.Dir("./Style"))
 	http.Handle("/Style/", http.StripPrefix("/Style/", fileServer))
