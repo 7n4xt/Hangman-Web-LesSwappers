@@ -33,18 +33,20 @@ func gameHandler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "game", nil)
 }
 
+func scoreboardHandler(w http.ResponseWriter, r *http.Request) {
+	templates.ExecuteTemplate(w, "scoreboard", nil)
+}
+
 func main() {
 	http.HandleFunc("/index", homeHandler)
 	http.HandleFunc("/engines", enginesHandler)
 	http.HandleFunc("/choose", chooseHandler)
 	http.HandleFunc("/game", gameHandler)
+	http.HandleFunc("/scoreboard", scoreboardHandler)
 
 	fileServer := http.FileServer(http.Dir("./Style"))
 	http.Handle("/Style/", http.StripPrefix("/Style/", fileServer))
 
-	port := ":8080"
-	fmt.Printf("Server starting on port %s...\n", port)
-	if err := http.ListenAndServe(port, nil); err != nil {
-		log.Fatalf("Server failed to start: %v", err)
-	}
+	http.ListenAndServe(":8080", nil)
+	fmt.Printf("Server starting on port 8080...\n")
 }

@@ -1,3 +1,4 @@
+{{define "scoreboard"}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,87 +16,8 @@
     rel="stylesheet">
   <link rel="stylesheet" href="/Style/CSS/general.css">
   <link rel="stylesheet" href="/Style/CSS/navigaton-bar.css">
+  <link rel="stylesheet" href="/Style/CSS/scoreboard.css">
 </head>
-<style>
-  * {
-    font-family: "Orbitron", sans-serif;
-  }
-
-  body {
-    background-image: url(/Style/homeAssets/Picsart_24-10-26_20-16-11-810.jpg);
-  }
-
-  .title {
-    font-size: 4rem;
-    margin-bottom: 10pxpx;
-    text-align: center;
-    color: white;
-    text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
-    letter-spacing: 2px;
-  }
-
-  .description {
-    color: white;
-    width: 500px;
-    text-align: center;
-    margin: 15px;
-    font-size: 15px;
-  }
-
-  .flex-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .blur-background {
-    max-width: 1000px;
-    padding: 30px;
-    width: 100%;
-    margin: 150px;
-    backdrop-filter: blur(2px);
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 40px;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-  }
-
-
-  .container {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid rgba(0, 155, 255, 0.3);
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    flex: 1;
-    gap: 100px;
-    max-width: 300px;
-    width: 100%;
-    background-color: rgba(0, 24, 44, 0.623);
-  }
-
-  .players {
-    display: flex;
-    justify-content: space-between;
-    gap: 50px;
-    flex: 1;
-    margin: 0px 20px;
-  }
-
-  .players p {
-    border: solid;
-    color: white;
-    border-radius: 20px;
-    padding: 5px 10px;
-    border-width: 1px;
-    border-color: rgba(0, 155, 255, 0.7);
-    box-shadow: inset 1px 1px 5px rgba(0, 155, 255, 0.3);
-  }
-</style>
 
 <body>
   <nav class="nav-container">
@@ -113,34 +35,36 @@
     <div class="blur-background">
       <h2 class="title">Scoreboard</h2>
       <p class="description">Here are all the players who participated in the game along with their achieved scores.</p>
-      <div class="container">
-        <div class="players">
-          <p class="player-name">Malek</p>
-          <p class="player-score">20000</p>
+      <div class="container-of-container">
+        <div class="container">
+          <div class="players">
+            <p class="player-name">Malek</p>
+            <p class="player-score">20000</p>
+          </div>
         </div>
-      </div>
-      <div class="container">
-        <div class="players">
-          <p class="player-name">tacumi</p>
-          <p class="player-score">15000</p>
+        <div class="container">
+          <div class="players">
+            <p class="player-name">tacumi</p>
+            <p class="player-score">15000</p>
+          </div>
         </div>
-      </div>
-      <div class="container">
-        <div class="players">
-          <p class="player-name">Iketani</p>
-          <p class="player-score">12000</p>
+        <div class="container">
+          <div class="players">
+            <p class="player-name">Iketani</p>
+            <p class="player-score">12000</p>
+          </div>
         </div>
-      </div>
-      <div class="container">
-        <div class="players">
-          <p class="player-name">Enzo</p>
-          <p class="player-score">10000</p>
+        <div class="container">
+          <div class="players">
+            <p class="player-name">Enzo</p>
+            <p class="player-score">10000</p>
+          </div>
         </div>
-      </div>
-      <div class="container">
-        <div class="players">
-          <p class="player-name">Antony</p>
-          <p class="player-score">9000</p>
+        <div class="container">
+          <div class="players">
+            <p class="player-name">Antony</p>
+            <p class="player-score">9000</p>
+          </div>
         </div>
       </div>
     </div>
@@ -150,3 +74,4 @@
 </body>
 
 </html>
+{{end}}
