@@ -40,7 +40,7 @@ main h2 {
   text-shadow: 0 0 10px rgba(140, 0, 255, 0.534);
   text-align: center;
   width: 620px;
- 
+
   color: rgb(255, 255, 255);
   border-radius: 10px;
   font-size: 1.5em;
@@ -75,7 +75,7 @@ main h2 {
   display: flex;
   justify-content: center;
   padding: 15px;
-  margin: 0 auto;
+  margin: 50px auto;
   max-width: 1000px;
   backdrop-filter: blur(5px);
   background-color: rgba(0, 0, 0, 0.4);
@@ -178,6 +178,8 @@ main h2 {
   font-weight: bold;
   font-size: 18px;
 }
+
+
 
 @media (max-width: 700px) {
   .rules-grid {
