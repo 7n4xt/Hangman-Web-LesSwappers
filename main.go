@@ -47,6 +47,10 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./Style"))
 	http.Handle("/Style/", http.StripPrefix("/Style/", fileServer))
 
-	http.ListenAndServe(":8080", nil)
-	fmt.Printf("Server starting on port 8080...\n")
+	var err error = http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		fmt.Printf("Server starting on port 8080...\n")
+	}
 }
