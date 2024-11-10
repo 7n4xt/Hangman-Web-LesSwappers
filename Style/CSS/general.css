@@ -12,4 +12,5 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   min-height: 80vh;
+  max-height: 100vh;
 }

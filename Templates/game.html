@@ -16,18 +16,22 @@
   <link rel="stylesheet" href="/Style/CSS/general.css">
 </head>
 <style>
+  body {
+    height: 100vh;
+  }
+
   .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: start;
-    padding: 10px;
+    padding: 20px;
   }
 
   .nav-container img {
     width: 70px;
   }
 
-  .nav-right p {
+  .difficulty-bar p {
     padding: 10px;
     font-size: 35px;
   }
@@ -44,20 +48,83 @@
     height: 380px;
     object-fit: cover;
   }
+
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 66vh;
+
+  }
+
+  .guessing-zone-container {
+    background: rgba(0, 43, 78, 0.4);
+    border-radius: 50px;
+    border: 1px solid rgba(0, 155, 255, 0.7);
+    box-shadow: 0 0 20px rgba(0, 155, 255, 0.3);
+    backdrop-filter: blur(5px);
+    width: 800px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  h2 {
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-size: 1.8rem;
+    font-family: "Orbitron", sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
+  }
+
+  .display-word p {
+    line-height: 30px;
+    font-family: "Turret Road", sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+
+  .input-contaier input {
+    color: #000 !important;
+    font-family: "Turret Road", sans-serif;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 240px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .input-contaier input:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(0, 155, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+  }
 </style>
 
 <body>
 
   <header>
     <div class="nav-container">
-      <div class="nav-left">
+      <div class="health-bar">
         <img src="/Style/homeAssets/piston.png" alt="piston">
         <img src="/Style/homeAssets/piston.png" alt="piston">
         <img src="/Style/homeAssets/piston.png" alt="piston">
         <img src="/Style/homeAssets/piston.png" alt="piston">
         <img src="/Style/homeAssets/piston.png" alt="piston">
       </div>
-      <div class="nav-right">
+      <div class="difficulty-bar">
         <p>Hard</p>
       </div>
     </div>
@@ -69,16 +136,15 @@
 
   <main>
     <div class="guessing-zone-container">
+      <h2> Guess The Word Mechainc !</h2>
       <div class="display-word">
-        <p class="word-to-guess"></p>
-        <p class="already-guessed"></p>
+        <p class="word-to-guess">Word : _ _ _ _ _ _ _</p>
+        <p class="already-guessed">Guessed : H J O U F R P </p>
       </div>
       <div class="guess-input">
         <div class="input-contaier">
-
-        </div>
-        <div class="keyboard-layout">
-          
+          <input type="text" placeholder="write a word or a letter">
+          <button type="submit">Submit</button>
         </div>
       </div>
     </div>
