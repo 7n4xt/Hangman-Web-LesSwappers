@@ -4,6 +4,7 @@
 
 body {
   background-image: url(/Style/homeAssets/Picsart_24-10-26_20-16-11-810.jpg);
+  object-fit:fill;
 }
 
 .title {
@@ -35,7 +36,7 @@ body {
   max-width: 1200px;
   padding: 30px;
   width: 100%;
-  margin: 150px;
+  margin: 50px;
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.4);
   border-radius: 40px;

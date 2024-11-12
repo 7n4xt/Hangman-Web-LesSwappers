@@ -1,14 +1,18 @@
 .nav-container {
-  padding: 8px 10px;
-  overflow: hidden;
-  margin: 10px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 10px;
 }
 
 .nav-style {
   background: linear-gradient(135deg, #02c1b1 0%, #0091be 100%);
   border-radius: 7px;
-  padding: 12px 25px;
+  padding: 8px 20px;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
 }
 
 .menu {
@@ -16,11 +20,12 @@
   gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 }
 
 .menu a {
   color: white;
-  font-size: larger;
+  font-size: 1rem;
   padding: 5px 10px;
   text-align: center;
   text-decoration: none;

@@ -9,6 +9,7 @@ body {
   color: #fff;
   background-image: url(/Style/homeAssets/Background\ choose\ page.jpg);
   width: 100%;
+  min-width: 100vh;
 }
 
 h2 {
