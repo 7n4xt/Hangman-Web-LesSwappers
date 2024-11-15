@@ -1,5 +1,9 @@
 body {
   height: 100vh;
+  background-image: url(/Style/homeAssets/gameBackground.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .nav-container {
@@ -9,22 +13,10 @@ body {
   padding: 30px;
 }
 
-.nav-container img {
-  width: 70px;
-}
-
-.difficulty-bar p {
-  padding: 10px;
-  font-size: 35px;
-  text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
-  color: white;
-  font-family: "Orbitron", sans-serif;
-}
-
 .hangengine-container {
   display: flex;
   justify-content: center;
-  margin-top: -140px;
+  margin-top: -30px;
   margin-right: 40px;
 }
 
@@ -55,6 +47,43 @@ main {
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
+}
+
+
+.life-difficulty {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 700px;
+  height: 120px;
+  margin-top: -140px;
+}
+
+.health {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.health img {
+  width: 50px;
+}
+
+.health p {
+  padding: 10px;
+  font-size: 35px;
+  text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
+  color: white;
+  font-family: "Orbitron", sans-serif;
+}
+
+.difficulty {
+  padding: 10px;
+  font-size: 35px;
+  text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
+  color: white;
+  font-family: "Orbitron", sans-serif;
 }
 
 h2 {
@@ -127,7 +156,7 @@ h2 {
 .submit-button {
   background: linear-gradient(135deg, #02c1b1 0%, #0091be 100%);
   border-radius: 25px;
-  padding: 8px 12px;
+  padding: 9px 13px;
   border: none;
   transition: all 0.3s ease;
   margin: 0;
