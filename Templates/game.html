@@ -30,24 +30,26 @@
         <div class="health">
           <img src="/Style/homeAssets/engine-piston-clipart-md-4178874543.png" alt="health icon">
           <!-- here the trys left for the player -->
-          <p class="trys-left">6</p>
+          <p class="trys-left">{{.Attempts}}</p>
         </div>
         <div class="difficulty-bar">
           <!-- this should change on what difficulty the player is playing -->
-          <p class="difficulty">Hard</p>
+          <p class="difficulty">{{.Difficulty}}</p>
         </div>
       </div>
       <h2> Guess The Word Mechainc !</h2>
       <div class="display-word">
         <!-- the output should be here for the word to guess and the lettres already guessed -->
-        <p class="word-to-guess">Word : _ _ _ _ _ _ _</p>
-        <p class="already-guessed">Guessed : H J O U F R P </p>
+        <p class="word-to-guess">Word :{{range .DisplayWord}}{{.}}{{end}}</p>
+        <p class="already-guessed">Guessed: {{.GuessedLetters}}</p>
       </div>
       <div class="guess-input">
-        <div class="input-contaier">
-          <input type="text" placeholder="Type Word or a Letter" required>
-          <button class="submit-button" type="submit">Submit</button>
-        </div>
+        <form action="/guess" method="POST">
+          <div class="input-contaier">
+            <input type="text" placeholder="Type Word or a Letter" name="guess" required>
+            <button class="submit-button" type="submit">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
   </main>
