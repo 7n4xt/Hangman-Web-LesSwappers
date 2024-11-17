@@ -18,13 +18,22 @@
 <body>
     <div class="container">
         {{if eq .HasWon true}}
-        <h1>You Won</h1>
+        <h1 class="won">You Won</h1>
         {{else}}
-        <h1>You Lost</h1>
+        <h1 class="lost">You Lost</h1>
         {{end}}
-        <div class="result-info">
+        <div class="result">
            {{.GameOverMessage}}
         </div>
+        
+        <div>
+            {{if eq .HasWon false}}
+            <img class="car-lost" src="/Style/Result/engine totaled.jpg" alt="engine totaled">
+            {{else}}
+            <img class="car-won" src="/Style/Result/engine swapped.jpg" alt="engine swapped">
+            {{end}}
+        </div>
+       
         <div class="result-info">
             Word: {{.WordToGuess}}
         </div>

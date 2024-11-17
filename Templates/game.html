@@ -14,7 +14,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Turret+Road:wght@200;300;400;500;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/Style/CSS/general.css">
   <link rel="stylesheet" href="/Style/CSS/game.css">
 </head>
 
@@ -22,19 +21,19 @@
 
   <div class="hangengine-container">
     {{if eq .Attempts 6}}
-    <img src="/Style/Peugeot206/0 attempt.jpg" alt="a car with a engine hoist">
+    <img src="/Style/Peugeot206/0 attempt.png" alt="a car with a engine hoist">
     {{else if eq .Attempts 5}}
-    <img src="/Style/Peugeot206/1 attempt.jpg" alt="a car with a engine hoist">
+    <img src="/Style/Peugeot206/1 attempt.png" alt="a car with a engine hoist">
     {{else if eq .Attempts 5}}
-    <img src="/Style/Peugeot206/2 attempt.jpg" alt="a car with a engine hoist">
+    <img src="/Style/Peugeot206/2 attempt.png" alt="a car with a engine hoist">
     {{else if eq .Attempts 4}}
-    <img src="/Style/Peugeot206/3 attempt.jpg" alt="a car with a engine hoist">
+    <img src="/Style/Peugeot206/3 attempt.png" alt="a car with a engine hoist">
     {{else if eq .Attempts 3}}
-    <img src="/Style/Peugeot206/4 attempt.jpg" alt="a car with a engine hoist">
+    <img src="/Style/Peugeot206/4 attempt.png" alt="a car with a engine hoist">
     {{else if eq .Attempts 2}}
-    <img src="/Style/Peugeot206/5 attempt.jpg" alt="a car with a engine hoist">
+    <img src="/Style/Peugeot206/5 attempt.png" alt="a car with a engine hoist">
     {{else if eq .Attempts 1}}
-    <img src="/Style/Peugeot206/6 attempt.jpg" alt="a car with a engine hoist">
+    <img src="/Style/Peugeot206/6 attempt.png" alt="a car with a engine hoist">
     {{end}}
   </div>
 
@@ -42,7 +41,7 @@
     <div class="guessing-zone-container">
       <div class="life-difficulty">
         <div class="health">
-          <img src="/Style/homeAssets/piston.png" alt="health icon">
+          <img src="/Style/homeAssets/piston-xxl.png" alt="health icon">
           <!-- here the trys left for the player -->
           <p class="trys-left">{{.Attempts}}</p>
         </div>

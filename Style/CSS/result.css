@@ -37,7 +37,7 @@ body {
   align-items: center;
 }
 
-h1 {
+.won {
   font-size: 3rem;
   text-align: center;
   color: #fff;
@@ -47,22 +47,20 @@ h1 {
   letter-spacing: 2px;
   font-family: "Orbitron", sans-serif;
   margin-bottom: 20px;
-  animation: glow 2s ease-in-out infinite alternate;
 }
 
-@keyframes glow {
-  from {
-    text-shadow: 0 0 10px rgba(0, 155, 255, 0.5),
-      0 0 20px rgba(0, 155, 255, 0.3),
-      0 0 30px rgba(0, 155, 255, 0.2);
-  }
-
-  to {
-    text-shadow: 0 0 20px rgba(0, 155, 255, 0.7),
-      0 0 30px rgba(0, 155, 255, 0.5),
-      0 0 40px rgba(0, 155, 255, 0.3);
-  }
+.lost {
+  font-size: 3rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.5),
+    0 0 20px rgba(255, 0, 0, 0.3),
+    0 0 30px rgba(255, 0, 0, 0.2);
+  letter-spacing: 2px;
+  font-family: "Orbitron", sans-serif;
+  margin-bottom: 20px;
 }
+
 
 .result-info, .score {
   font-size: 1.8rem;
@@ -70,6 +68,27 @@ h1 {
   text-shadow: 0 0 10px rgba(0, 155, 255, 0.3);
   margin: 15px 0;
   text-align: center;
+}
+
+.result {
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
+  margin: 15px 0;
+  text-align: center;
+}
+
+
+.car-lost {
+  width: 200px;
+  border-radius: 15px;
+  box-shadow: #02c1b1;
+}
+
+.car-won {
+  width: 200px;
+  border-radius: 15px;
+  box-shadow: #02c1b1;
 }
 
 .button-container {
