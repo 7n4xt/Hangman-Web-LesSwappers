@@ -28,9 +28,9 @@ func GetWord(difficulty string) string {
 	if err != nil {
 		return "hangman"
 	}
-
-	rand.Seed(time.Now().UnixNano())
-	return words[rand.Intn(len(words))]
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source)
+	return words[r.Intn(len(words))]
 }
 
 func loadWordsFromFile(filename string) ([]string, error) {
@@ -57,14 +57,14 @@ func loadWordsFromFile(filename string) ([]string, error) {
 }
 
 func GetRandomPhrase(filename string) string {
-	phrases, err := loadWordsFromFile(filename)
+	sentence, err := loadWordsFromFile(filename)
 	if err != nil {
 		if filename == "BackEnd/utils/won.txt" {
 			return "Congratulations! You won!"
 		}
 		return "Game Over! Better luck next time!"
 	}
-
-	rand.Seed(time.Now().UnixNano())
-	return phrases[rand.Intn(len(phrases))]
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source)
+	return sentence[r.Intn(len(sentence))]
 }
