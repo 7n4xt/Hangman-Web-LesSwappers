@@ -212,7 +212,7 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		guess := strings.ToLower(r.FormValue("guess"))
-		if len(guess) != 1 {
+		if guess == "" {
 			http.Redirect(w, r, "/game", http.StatusSeeOther)
 			return
 		}
@@ -232,29 +232,46 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 			HasWon:         sess.HasWon,
 		}
 
-		if game.GuessLetter(guess) {
-			// Create new session with all data preserved
-			newSess := &Session{
-				PlayerName:     sess.PlayerName, // Preserve player name
-				Difficulty:     sess.Difficulty, // Preserve difficulty
-				Score:          sess.Score,
-				Attempts:       game.AttemptsLeft,
-				WordToGuess:    game.WordToGuess,
-				GuessedLetters: strings.Join(game.GuessedLetters, ","),
-				IsGameOver:     game.IsOver,
-				HasWon:         game.HasWon,
+		// Handle word guess
+		if len(guess) > 1 {
+			if guess == game.WordToGuess {
+				// Correct word guess
+				game.HasWon = true
+				game.IsOver = true
+			} else {
+				// Wrong word guess - lose 2 attempts
+				game.AttemptsLeft -= 2
+				if game.AttemptsLeft <= 0 {
+					game.AttemptsLeft = 0
+					game.IsOver = true
+				}
 			}
+		} else {
+			// Single letter guess
+			game.GuessLetter(guess)
+		}
 
-			if game.HasWon {
-				newSess.Score += calculateScore(sess.Difficulty, game.AttemptsLeft)
-			}
+		// Create new session with all data preserved
+		newSess := &Session{
+			PlayerName:     sess.PlayerName,
+			Difficulty:     sess.Difficulty,
+			Score:          sess.Score,
+			Attempts:       game.AttemptsLeft,
+			WordToGuess:    game.WordToGuess,
+			GuessedLetters: strings.Join(game.GuessedLetters, ","),
+			IsGameOver:     game.IsOver,
+			HasWon:         game.HasWon,
+		}
 
-			err = SaveSession(w, r, newSess)
-			if err != nil {
-				log.Printf("Error saving session: %v", err)
-				http.Error(w, "Error saving session", http.StatusInternalServerError)
-				return
-			}
+		if game.HasWon {
+			newSess.Score += calculateScore(sess.Difficulty, game.AttemptsLeft)
+		}
+
+		err = SaveSession(w, r, newSess)
+		if err != nil {
+			log.Printf("Error saving session: %v", err)
+			http.Error(w, "Error saving session", http.StatusInternalServerError)
+			return
 		}
 	}
 

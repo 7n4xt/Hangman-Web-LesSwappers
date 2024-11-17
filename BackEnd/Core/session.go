@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strings"
 )
 
 var (
@@ -24,13 +25,17 @@ func CreateNewSession(w http.ResponseWriter, r *http.Request, playerName, diffic
 	}
 
 	game := NewGame(difficulty)
+
+	// Convert guessed letters slice to comma-separated string
+	guessedLettersStr := strings.Join(game.GuessedLetters, ",")
+
 	sess := &Session{
 		PlayerName:     playerName,
 		Difficulty:     difficulty,
 		Score:          0,
 		Attempts:       6,
 		WordToGuess:    game.WordToGuess,
-		GuessedLetters: "",
+		GuessedLetters: guessedLettersStr,
 		IsGameOver:     false,
 		HasWon:         false,
 	}
