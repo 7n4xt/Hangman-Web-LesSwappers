@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	//"hang/models"
-	//"hang/utils"
 )
 
 var templates *template.Template

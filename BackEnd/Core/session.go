@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"encoding/base64"
 	"encoding/gob"
 	"encoding/json"
 	"net/http"
@@ -47,8 +48,14 @@ func GetSession(r *http.Request) (*Session, error) {
 		return nil, err
 	}
 
+	// Decode base64 string
+	decoded, err := base64.URLEncoding.DecodeString(cookie.Value)
+	if err != nil {
+		return nil, err
+	}
+
 	var sess Session
-	err = json.Unmarshal([]byte(cookie.Value), &sess)
+	err = json.Unmarshal(decoded, &sess)
 	if err != nil {
 		return nil, err
 	}
@@ -62,9 +69,12 @@ func SaveSession(w http.ResponseWriter, r *http.Request, sess *Session) error {
 		return err
 	}
 
+	// Encode to base64
+	encoded := base64.URLEncoding.EncodeToString(sessionData)
+
 	cookie := &http.Cookie{
 		Name:     "hangman-session",
-		Value:    string(sessionData),
+		Value:    encoded,
 		Path:     "/",
 		HttpOnly: true,
 		Secure:   false,
