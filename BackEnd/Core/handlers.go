@@ -53,7 +53,7 @@ func EnginesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ScoreboardHandler(w http.ResponseWriter, r *http.Request) {
-	topScores, err := GetTopScores(10) // Get top 10 scores
+	topScores, err := GetTopScores(10)
 	if err != nil {
 		log.Printf("Error loading scores: %v", err)
 		topScores = []ScoreEntry{}
@@ -66,9 +66,8 @@ func ScoreboardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GameHandler(w http.ResponseWriter, r *http.Request) {
-	sess, _ := GetSession(r) // Error checking is done by middleware
+	sess, _ := GetSession(r)
 
-	// If game is over, redirect to result page
 	if sess.IsGameOver {
 		http.Redirect(w, r, "/result", http.StatusSeeOther)
 		return
@@ -114,14 +113,12 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Additional validation for the result page
 	if !sess.IsGameOver {
 		log.Printf("Unauthorized access to result page: game not over")
 		http.Redirect(w, r, "/game", http.StatusSeeOther)
 		return
 	}
 
-	// Save the score when game is over and player has won
 	if sess.IsGameOver && sess.HasWon {
 		err := SaveScore(sess.PlayerName, sess.Score)
 		if err != nil {
@@ -140,7 +137,6 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "result", data)
 }
 
-// Add a new middleware specifically for the result page
 func RequireGameOverSession(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		sess, err := GetSession(r)
@@ -150,7 +146,6 @@ func RequireGameOverSession(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		// Check if the game is actually over
 		if !sess.IsGameOver {
 			log.Printf("Unauthorized access: game not over")
 			http.Redirect(w, r, "/game", http.StatusSeeOther)
@@ -173,7 +168,6 @@ func StartGameHandler(w http.ResponseWriter, r *http.Request) {
 		playerName := r.FormValue("pseudo")
 		difficulty := r.FormValue("difficulty")
 
-		// Add validation
 		if playerName == "" {
 			http.Error(w, "Player name is required", http.StatusBadRequest)
 			return
@@ -232,14 +226,12 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 			HasWon:         sess.HasWon,
 		}
 
-		// Handle word guess
 		if len(guess) > 1 {
 			if guess == game.WordToGuess {
-				// Correct word guess
+
 				game.HasWon = true
 				game.IsOver = true
 			} else {
-				// Wrong word guess - lose 2 attempts
 				game.AttemptsLeft -= 2
 				if game.AttemptsLeft <= 0 {
 					game.AttemptsLeft = 0
@@ -247,11 +239,9 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else {
-			// Single letter guess
 			game.GuessLetter(guess)
 		}
 
-		// Create new session with all data preserved
 		newSess := &Session{
 			PlayerName:     sess.PlayerName,
 			Difficulty:     sess.Difficulty,

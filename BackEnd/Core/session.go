@@ -25,8 +25,6 @@ func CreateNewSession(w http.ResponseWriter, r *http.Request, playerName, diffic
 	}
 
 	game := NewGame(difficulty)
-
-	// Convert guessed letters slice to comma-separated string
 	guessedLettersStr := strings.Join(game.GuessedLetters, ",")
 
 	sess := &Session{
@@ -49,7 +47,6 @@ func GetSession(r *http.Request) (*Session, error) {
 		return nil, err
 	}
 
-	// Decode base64 string
 	decoded, err := base64.URLEncoding.DecodeString(cookie.Value)
 	if err != nil {
 		return nil, err
@@ -61,7 +58,6 @@ func GetSession(r *http.Request) (*Session, error) {
 		return nil, err
 	}
 
-	// Validate session data
 	if sess.PlayerName == "" {
 		return nil, fmt.Errorf("invalid session: player name is empty")
 	}
@@ -75,7 +71,6 @@ func SaveSession(w http.ResponseWriter, r *http.Request, sess *Session) error {
 		return err
 	}
 
-	// Encode to base64
 	encoded := base64.URLEncoding.EncodeToString(sessionData)
 
 	cookie := &http.Cookie{
@@ -106,25 +101,21 @@ func ClearSession(w http.ResponseWriter) {
 const scoresFile = "scores.json"
 
 func SaveScore(playerName string, score int) error {
-	// Read existing scores
 	scores, err := LoadScores()
 	if err != nil {
 		scores = []ScoreEntry{}
 	}
 
-	// Add new score
 	newScore := ScoreEntry{
 		PlayerName: playerName,
 		Score:      score,
 	}
 	scores = append(scores, newScore)
 
-	// Sort scores in descending order
 	sort.Slice(scores, func(i, j int) bool {
 		return scores[i].Score > scores[j].Score
 	})
 
-	// Write to JSON file
 	file, err := json.MarshalIndent(scores, "", "    ")
 	if err != nil {
 		return err
@@ -136,18 +127,15 @@ func SaveScore(playerName string, score int) error {
 func LoadScores() ([]ScoreEntry, error) {
 	var scores []ScoreEntry
 
-	// Check if file exists
 	if _, err := os.Stat(scoresFile); os.IsNotExist(err) {
 		return []ScoreEntry{}, nil
 	}
 
-	// Read file
 	data, err := os.ReadFile(scoresFile)
 	if err != nil {
 		return nil, err
 	}
 
-	// Parse JSON
 	err = json.Unmarshal(data, &scores)
 	if err != nil {
 		return nil, err
