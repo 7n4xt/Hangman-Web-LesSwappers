@@ -17,32 +17,28 @@ func NewGame(difficulty string) *Game {
 		HasWon:         false,
 	}
 
-	// Get 2 random letters from the word
 	initialLetters := getInitialLetters(game.WordToGuess, 2)
 	game.GuessedLetters = initialLetters
 
 	return game
 }
 
-// New function to get initial letters
 func getInitialLetters(word string, count int) []string {
-	// Create a slice of available positions
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source) 
+
 	letterPositions := make([]int, len(word))
 	for i := range letterPositions {
 		letterPositions[i] = i
 	}
 
-	// Shuffle the positions
-	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(letterPositions), func(i, j int) {
+	r.Shuffle(len(letterPositions), func(i, j int) {
 		letterPositions[i], letterPositions[j] = letterPositions[j], letterPositions[i]
 	})
 
-	// Get unique letters
 	selectedLetters := make(map[string]bool)
 	result := []string{}
 
-	// Select random letters
 	for _, pos := range letterPositions {
 		letter := string(word[pos])
 		if !selectedLetters[letter] {

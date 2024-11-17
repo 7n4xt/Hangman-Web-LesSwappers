@@ -8,12 +8,9 @@ import (
 )
 
 func main() {
-	// Initialize templates first
 	backend.InitTemplates()
-
 	fileServer := http.FileServer(http.Dir("./Style"))
 	http.Handle("/Style/", http.StripPrefix("/Style/", fileServer))
-
 	http.HandleFunc("/", backend.IndexHandler)
 	http.HandleFunc("/start-game", backend.StartGameHandler)
 	http.HandleFunc("/guess", backend.GuessHandler)
@@ -23,7 +20,6 @@ func main() {
 	http.HandleFunc("/scoreboard", backend.ScoreboardHandler)
 	http.HandleFunc("/engines", backend.EnginesHandler)
 	http.HandleFunc("/result", backend.RequireSession(backend.RequireGameOverSession(backend.ResultHandler)))
-
 	fmt.Printf("Server starting on port 8080...\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
