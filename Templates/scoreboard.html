@@ -25,38 +25,15 @@
     <div class="blur-background">
       <h2 class="title">Scoreboard</h2>
       <p class="description">Here are all the players who participated in the game along with their achieved scores.</p>
-      <!-- make a for the scores -->
       <div class="container-of-container">
+        {{range .Scores}}
         <div class="container">
           <div class="players">
-            <p class="player-name">Malek</p>
-            <p class="player-score">20000</p>
+            <p class="player-name">{{.PlayerName}}</p>
+            <p class="player-score">{{.Score}}</p>
           </div>
         </div>
-        <div class="container">
-          <div class="players">
-            <p class="player-name">tacumi</p>
-            <p class="player-score">15000</p>
-          </div>
-        </div>
-        <div class="container">
-          <div class="players">
-            <p class="player-name">Iketani</p>
-            <p class="player-score">12000</p>
-          </div>
-        </div>
-        <div class="container">
-          <div class="players">
-            <p class="player-name">Enzo</p>
-            <p class="player-score">10000</p>
-          </div>
-        </div>
-        <div class="container">
-          <div class="players">
-            <p class="player-name">Antony</p>
-            <p class="player-score">9000</p>
-          </div>
-        </div>
+        {{end}}
       </div>
     </div>
   </div>

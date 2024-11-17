@@ -5,14 +5,6 @@ import (
 	"strings"
 )
 
-type Game struct {
-	WordToGuess    string
-	GuessedLetters []string
-	AttemptsLeft   int
-	IsOver         bool
-	HasWon         bool
-}
-
 func NewGame(difficulty string) *Game {
 	word := utils.GetWord(difficulty)
 	return &Game{

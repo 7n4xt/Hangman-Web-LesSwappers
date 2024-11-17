@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -34,12 +35,21 @@ func ChooseHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "choose", nil)
 }
 
-func ScoreboardHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "scoreboard", nil)
-}
-
 func EnginesHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "engines", nil)
+}
+
+func ScoreboardHandler(w http.ResponseWriter, r *http.Request) {
+	topScores, err := GetTopScores(10) // Get top 10 scores
+	if err != nil {
+		log.Printf("Error loading scores: %v", err)
+		topScores = []ScoreEntry{}
+	}
+
+	data := map[string]interface{}{
+		"Scores": topScores,
+	}
+	renderTemplate(w, "scoreboard", data)
 }
 
 func GameHandler(w http.ResponseWriter, r *http.Request) {
@@ -94,6 +104,14 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Save the score when game is over
+	if sess.IsGameOver && sess.HasWon {
+		err = SaveScore(sess.PlayerName, sess.Score)
+		if err != nil {
+			log.Printf("Error saving score: %v", err)
+		}
+	}
+
 	data := map[string]interface{}{
 		"PlayerName":      sess.PlayerName,
 		"Score":           sess.Score,
@@ -116,9 +134,21 @@ func StartGameHandler(w http.ResponseWriter, r *http.Request) {
 		playerName := r.FormValue("pseudo")
 		difficulty := r.FormValue("difficulty")
 
+		// Add validation
+		if playerName == "" {
+			http.Error(w, "Player name is required", http.StatusBadRequest)
+			return
+		}
+
+		if difficulty == "" {
+			http.Error(w, "Difficulty selection is required", http.StatusBadRequest)
+			return
+		}
+
 		err := CreateNewSession(w, r, playerName, difficulty)
 		if err != nil {
-			http.Error(w, "Error starting game", http.StatusInternalServerError)
+			log.Printf("Session creation error: %v", err)
+			http.Error(w, fmt.Sprintf("Error starting game: %v", err), http.StatusInternalServerError)
 			return
 		}
 
@@ -128,10 +158,10 @@ func StartGameHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/choose", http.StatusSeeOther)
 }
-
 func GuessHandler(w http.ResponseWriter, r *http.Request) {
 	sess, err := GetSession(r)
 	if err != nil {
+		log.Printf("Session error: %v", err)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -148,7 +178,6 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Fix the GuessedLetters split
 		var guessedLetters []string
 		if sess.GuessedLetters != "" {
 			guessedLetters = strings.Split(sess.GuessedLetters, ",")
@@ -165,18 +194,25 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if game.GuessLetter(guess) {
-			// Update session with new game state
-			sess.GuessedLetters = strings.Join(game.GuessedLetters, ",")
-			sess.Attempts = game.AttemptsLeft
-			sess.IsGameOver = game.IsOver
-			sess.HasWon = game.HasWon
-
-			if game.HasWon {
-				sess.Score += calculateScore(sess.Difficulty, game.AttemptsLeft)
+			// Create new session with all data preserved
+			newSess := &Session{
+				PlayerName:     sess.PlayerName, // Preserve player name
+				Difficulty:     sess.Difficulty, // Preserve difficulty
+				Score:          sess.Score,
+				Attempts:       game.AttemptsLeft,
+				WordToGuess:    game.WordToGuess,
+				GuessedLetters: strings.Join(game.GuessedLetters, ","),
+				IsGameOver:     game.IsOver,
+				HasWon:         game.HasWon,
 			}
 
-			err = SaveSession(w, r, sess)
+			if game.HasWon {
+				newSess.Score += calculateScore(sess.Difficulty, game.AttemptsLeft)
+			}
+
+			err = SaveSession(w, r, newSess)
 			if err != nil {
+				log.Printf("Error saving session: %v", err)
 				http.Error(w, "Error saving session", http.StatusInternalServerError)
 				return
 			}

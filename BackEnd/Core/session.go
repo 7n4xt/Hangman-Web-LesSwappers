@@ -4,29 +4,25 @@ import (
 	"encoding/base64"
 	"encoding/gob"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
+	"sort"
 )
 
 var (
 	secretKey = []byte("secret-key")
 )
 
-type Session struct {
-	PlayerName     string
-	Difficulty     string
-	Score          int
-	Attempts       int
-	WordToGuess    string
-	GuessedLetters string
-	IsGameOver     bool
-	HasWon         bool
-}
-
 func init() {
 	gob.Register(Session{})
 }
 
 func CreateNewSession(w http.ResponseWriter, r *http.Request, playerName, difficulty string) error {
+	if playerName == "" {
+		return fmt.Errorf("player name cannot be empty")
+	}
+
 	game := NewGame(difficulty)
 	sess := &Session{
 		PlayerName:     playerName,
@@ -58,6 +54,11 @@ func GetSession(r *http.Request) (*Session, error) {
 	err = json.Unmarshal(decoded, &sess)
 	if err != nil {
 		return nil, err
+	}
+
+	// Validate session data
+	if sess.PlayerName == "" {
+		return nil, fmt.Errorf("invalid session: player name is empty")
 	}
 
 	return &sess, nil
@@ -95,4 +96,69 @@ func ClearSession(w http.ResponseWriter) {
 		MaxAge:   -1,
 	}
 	http.SetCookie(w, cookie)
+}
+
+const scoresFile = "scores.json"
+
+func SaveScore(playerName string, score int) error {
+	// Read existing scores
+	scores, err := LoadScores()
+	if err != nil {
+		scores = []ScoreEntry{}
+	}
+
+	// Add new score
+	newScore := ScoreEntry{
+		PlayerName: playerName,
+		Score:      score,
+	}
+	scores = append(scores, newScore)
+
+	// Sort scores in descending order
+	sort.Slice(scores, func(i, j int) bool {
+		return scores[i].Score > scores[j].Score
+	})
+
+	// Write to JSON file
+	file, err := json.MarshalIndent(scores, "", "    ")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(scoresFile, file, 0644)
+}
+
+func LoadScores() ([]ScoreEntry, error) {
+	var scores []ScoreEntry
+
+	// Check if file exists
+	if _, err := os.Stat(scoresFile); os.IsNotExist(err) {
+		return []ScoreEntry{}, nil
+	}
+
+	// Read file
+	data, err := os.ReadFile(scoresFile)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse JSON
+	err = json.Unmarshal(data, &scores)
+	if err != nil {
+		return nil, err
+	}
+
+	return scores, nil
+}
+
+func GetTopScores(limit int) ([]ScoreEntry, error) {
+	scores, err := LoadScores()
+	if err != nil {
+		return nil, err
+	}
+
+	if limit > len(scores) {
+		limit = len(scores)
+	}
+	return scores[:limit], nil
 }
