@@ -27,6 +27,18 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 	}
 }
 
+func RequireSession(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		sess, err := GetSession(r)
+		if err != nil || sess == nil {
+			log.Printf("Unauthorized access attempt: %v", err)
+			http.Redirect(w, r, "/choose", http.StatusSeeOther)
+			return
+		}
+		next(w, r)
+	}
+}
+
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "index", nil)
 }
@@ -53,11 +65,7 @@ func ScoreboardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GameHandler(w http.ResponseWriter, r *http.Request) {
-	sess, err := GetSession(r)
-	if err != nil {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
+	sess, _ := GetSession(r) // Error checking is done by middleware
 
 	// If game is over, redirect to result page
 	if sess.IsGameOver {
@@ -100,13 +108,21 @@ func GameHandler(w http.ResponseWriter, r *http.Request) {
 func ResultHandler(w http.ResponseWriter, r *http.Request) {
 	sess, err := GetSession(r)
 	if err != nil {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		log.Printf("Session error in ResultHandler: %v", err)
+		http.Redirect(w, r, "/choose", http.StatusSeeOther)
 		return
 	}
 
-	// Save the score when game is over
+	// Additional validation for the result page
+	if !sess.IsGameOver {
+		log.Printf("Unauthorized access to result page: game not over")
+		http.Redirect(w, r, "/game", http.StatusSeeOther)
+		return
+	}
+
+	// Save the score when game is over and player has won
 	if sess.IsGameOver && sess.HasWon {
-		err = SaveScore(sess.PlayerName, sess.Score)
+		err := SaveScore(sess.PlayerName, sess.Score)
 		if err != nil {
 			log.Printf("Error saving score: %v", err)
 		}
@@ -120,6 +136,27 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	renderTemplate(w, "result", data)
+}
+
+// Add a new middleware specifically for the result page
+func RequireGameOverSession(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		sess, err := GetSession(r)
+		if err != nil || sess == nil {
+			log.Printf("Session error in result page middleware: %v", err)
+			http.Redirect(w, r, "/choose", http.StatusSeeOther)
+			return
+		}
+
+		// Check if the game is actually over
+		if !sess.IsGameOver {
+			log.Printf("Unauthorized access: game not over")
+			http.Redirect(w, r, "/game", http.StatusSeeOther)
+			return
+		}
+
+		next(w, r)
+	}
 }
 
 func getGameOverMessage(hasWon bool) string {

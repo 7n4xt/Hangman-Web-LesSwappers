@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	backend "hangmanWeb/backend/core"
+	"hangmanWeb/BackEnd/Core"
 	"log"
 	"net/http"
 )
@@ -19,10 +19,10 @@ func main() {
 	http.HandleFunc("/guess", backend.GuessHandler)
 	http.HandleFunc("/index", backend.IndexHandler)
 	http.HandleFunc("/choose", backend.ChooseHandler)
-	http.HandleFunc("/game", backend.GameHandler)
+	http.HandleFunc("/game", backend.RequireSession(backend.GameHandler))
 	http.HandleFunc("/scoreboard", backend.ScoreboardHandler)
 	http.HandleFunc("/engines", backend.EnginesHandler)
-	http.HandleFunc("/result", backend.ResultHandler)
+	http.HandleFunc("/result", backend.RequireSession(backend.RequireGameOverSession(backend.ResultHandler)))
 
 	fmt.Printf("Server starting on port 8080...\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
