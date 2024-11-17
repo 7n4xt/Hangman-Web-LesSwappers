@@ -21,8 +21,21 @@
 <body>
 
   <div class="hangengine-container">
-    <!-- This should change depnding on the trys like if its 1 try this photo appaire etc.. -->
+    {{if eq .Attempts 6}}
+    <img src="/Style/Peugeot206/0 attempt.jpg" alt="a car with a engine hoist">
+    {{else if eq .Attempts 5}}
+    <img src="/Style/Peugeot206/1 attempt.jpg" alt="a car with a engine hoist">
+    {{else if eq .Attempts 5}}
     <img src="/Style/Peugeot206/2 attempt.jpg" alt="a car with a engine hoist">
+    {{else if eq .Attempts 4}}
+    <img src="/Style/Peugeot206/3 attempt.jpg" alt="a car with a engine hoist">
+    {{else if eq .Attempts 3}}
+    <img src="/Style/Peugeot206/4 attempt.jpg" alt="a car with a engine hoist">
+    {{else if eq .Attempts 2}}
+    <img src="/Style/Peugeot206/5 attempt.jpg" alt="a car with a engine hoist">
+    {{else if eq .Attempts 1}}
+    <img src="/Style/Peugeot206/6 attempt.jpg" alt="a car with a engine hoist">
+    {{end}}
   </div>
 
   <main>

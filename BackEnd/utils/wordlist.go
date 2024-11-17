@@ -13,15 +13,15 @@ func GetWord(difficulty string) string {
 
 	switch difficulty {
 	case "Easy":
-		filename = "easy.txt"
+		filename = "BackEnd/utils/easy.txt"
 	case "Normal":
-		filename = "normal.txt"
+		filename = "BackEnd/utils/normal.txt"
 	case "Hard":
-		filename = "hard.txt"
+		filename = "BackEnd/utils/hard.txt"
 	case "Insane":
-		filename = "insane.txt"
+		filename = "BackEnd/utils/insane.txt"
 	default:
-		filename = "easy.txt"
+		filename = "BackEnd/utils/easy.txt"
 	}
 
 	words, err := loadWordsFromFile(filename)
