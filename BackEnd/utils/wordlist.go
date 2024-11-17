@@ -55,3 +55,16 @@ func loadWordsFromFile(filename string) ([]string, error) {
 
 	return words, nil
 }
+
+func GetRandomPhrase(filename string) string {
+	phrases, err := loadWordsFromFile(filename)
+	if err != nil {
+		if filename == "BackEnd/utils/won.txt" {
+			return "Congratulations! You won!"
+		}
+		return "Game Over! Better luck next time!"
+	}
+
+	rand.Seed(time.Now().UnixNano())
+	return phrases[rand.Intn(len(phrases))]
+}

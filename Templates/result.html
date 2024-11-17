@@ -17,7 +17,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>{{.GameOverMessage}}</h1>
+        {{if eq .HasWon true}}
+        <h1>You Won</h1>
+        {{else}}
+        <h1>You Lost</h1>
+        {{end}}
+        <div class="result-info">
+           {{.GameOverMessage}}
+        </div>
         <div class="result-info">
             Word: {{.WordToGuess}}
         </div>

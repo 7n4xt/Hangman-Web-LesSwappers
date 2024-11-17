@@ -2,6 +2,7 @@ package backend
 
 import (
 	"fmt"
+	"hangmanWeb/BackEnd/utils"
 	"html/template"
 	"log"
 	"net/http"
@@ -133,6 +134,7 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		"Score":           sess.Score,
 		"GameOverMessage": getGameOverMessage(sess.HasWon),
 		"WordToGuess":     sess.WordToGuess,
+		"HasWon":          sess.HasWon,
 	}
 
 	renderTemplate(w, "result", data)
@@ -161,9 +163,9 @@ func RequireGameOverSession(next http.HandlerFunc) http.HandlerFunc {
 
 func getGameOverMessage(hasWon bool) string {
 	if hasWon {
-		return "Congratulations! You won!"
+		return utils.GetRandomPhrase("BackEnd/utils/won.txt")
 	}
-	return "Game Over! Better luck next time!"
+	return utils.GetRandomPhrase("BackEnd/utils/lose.txt")
 }
 
 func StartGameHandler(w http.ResponseWriter, r *http.Request) {
