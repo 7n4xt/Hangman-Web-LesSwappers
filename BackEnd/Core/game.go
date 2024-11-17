@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"hang/utils"
+	"hangmanWeb/backend/utils"
 	"strings"
 )
 

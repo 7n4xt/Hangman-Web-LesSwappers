@@ -29,19 +29,19 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "index.html", nil)
+	renderTemplate(w, "index", nil)
 }
 
 func ChooseHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "choose.html", nil)
+	renderTemplate(w, "choose", nil)
 }
 
 func ScoreboardHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "scoreboard.html", nil)
+	renderTemplate(w, "scoreboard", nil)
 }
 
 func EnginesHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "engines.html", nil)
+	renderTemplate(w, "engines", nil)
 }
 
 func GameHandler(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +80,7 @@ func GameHandler(w http.ResponseWriter, r *http.Request) {
 		"WordToGuess":     sess.WordToGuess,
 	}
 
-	renderTemplate(w, "game.html", data)
+	renderTemplate(w, "game", data)
 }
 
 func getGameOverMessage(hasWon bool) string {

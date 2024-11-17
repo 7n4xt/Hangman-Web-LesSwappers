@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	backend "hang/Core" // Make sure this import path matches your project structure
+	"hangmanWeb/backend/core"
 	"log"
 	"net/http"
 )
@@ -14,6 +14,7 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./Style"))
 	http.Handle("/Style/", http.StripPrefix("/Style/", fileServer))
 
+	http.HandleFunc("/", backend.IndexHandler)
 	http.HandleFunc("/start-game", backend.StartGameHandler)
 	http.HandleFunc("/guess", backend.GuessHandler)
 	http.HandleFunc("/index", backend.IndexHandler)
