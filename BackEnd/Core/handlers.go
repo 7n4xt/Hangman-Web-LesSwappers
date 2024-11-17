@@ -49,6 +49,12 @@ func GameHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// If game is over, redirect to result page
+	if sess.IsGameOver {
+		http.Redirect(w, r, "/result", http.StatusSeeOther)
+		return
+	}
+
 	var guessedLetters []string
 	if sess.GuessedLetters != "" {
 		guessedLetters = strings.Split(sess.GuessedLetters, ",")
@@ -79,6 +85,23 @@ func GameHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	renderTemplate(w, "game", data)
+}
+
+func ResultHandler(w http.ResponseWriter, r *http.Request) {
+	sess, err := GetSession(r)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	data := map[string]interface{}{
+		"PlayerName":      sess.PlayerName,
+		"Score":           sess.Score,
+		"GameOverMessage": getGameOverMessage(sess.HasWon),
+		"WordToGuess":     sess.WordToGuess,
+	}
+
+	renderTemplate(w, "result", data)
 }
 
 func getGameOverMessage(hasWon bool) string {

@@ -1,0 +1,130 @@
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  font-weight: bold;
+  list-style: none;
+  font-family: "Turret Road", sans-serif;
+}
+
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-image: url(/Style/homeAssets/Background\ choose\ page.jpg);
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 40px;
+  margin-bottom: 100px;
+  backdrop-filter: blur(10px);
+  background: rgba(8, 0, 0, 0.286);
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 118, 135, 0.37);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 3rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 221, 255, 0.5),
+    0 0 20px rgba(0, 247, 255, 0.3),
+    0 0 30px rgba(0, 242, 255, 0.2);
+  letter-spacing: 2px;
+  font-family: "Orbitron", sans-serif;
+  margin-bottom: 20px;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(0, 155, 255, 0.5),
+      0 0 20px rgba(0, 155, 255, 0.3),
+      0 0 30px rgba(0, 155, 255, 0.2);
+  }
+
+  to {
+    text-shadow: 0 0 20px rgba(0, 155, 255, 0.7),
+      0 0 30px rgba(0, 155, 255, 0.5),
+      0 0 40px rgba(0, 155, 255, 0.3);
+  }
+}
+
+.result-info, .score {
+  font-size: 1.8rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 155, 255, 0.3);
+  margin: 15px 0;
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 200px;
+  margin-right: 40px;
+}
+
+.button {
+  background: linear-gradient(135deg, #02c1b1 0%, #0091be 100%);
+  padding: 12px 25px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: "Orbitron";
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+
+.button.home {
+    background: linear-gradient(135deg, #ff3636 0%, #470101 100%);
+  padding: 12px 25px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: "Orbitron";
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+.button.home:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+}
+
+.button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 187, 255, 0.3);
+}
+
+.button:active {
+  transform: scale(0.9);
+}
