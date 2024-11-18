@@ -145,14 +145,6 @@ func LoadScores() ([]ScoreEntry, error) {
 	return scores, nil
 }
 
-func GetTopScores(limit int) ([]ScoreEntry, error) {
-	scores, err := LoadScores()
-	if err != nil {
-		return nil, err
-	}
-
-	if limit > len(scores) {
-		limit = len(scores)
-	}
-	return scores[:limit], nil
+func GetAllScores() ([]ScoreEntry, error) {
+    return LoadScores() 
 }

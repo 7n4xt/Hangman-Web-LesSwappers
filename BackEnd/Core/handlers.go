@@ -54,16 +54,15 @@ func EnginesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ScoreboardHandler(w http.ResponseWriter, r *http.Request) {
-	topScores, err := GetTopScores(10)
-	if err != nil {
-		log.Printf("Error loading scores: %v", err)
-		topScores = []ScoreEntry{}
-	}
-
-	data := map[string]interface{}{
-		"Scores": topScores,
-	}
-	renderTemplate(w, "scoreboard", data)
+    scores, err := LoadScores()
+    if err != nil {
+        log.Printf("Error loading scores: %v", err)
+        scores = []ScoreEntry{}
+    }
+    data := map[string]interface{}{
+        "Scores": scores, 
+    }
+    renderTemplate(w, "scoreboard", data)
 }
 
 func GameHandler(w http.ResponseWriter, r *http.Request) {
@@ -103,7 +102,7 @@ func GameHandler(w http.ResponseWriter, r *http.Request) {
 		"GameOverMessage": getGameOverMessage(sess.HasWon),
 		"WordToGuess":     sess.WordToGuess,
 		"ElapsedTime":     int(elapsedTime),
-		"Message":         sess.Message, // Add this line
+		"Message":         sess.Message,
 	}
 
 	renderTemplate(w, "game", data)

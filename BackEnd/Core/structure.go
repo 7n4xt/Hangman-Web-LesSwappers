@@ -24,7 +24,7 @@ type Session struct {
 	IsGameOver     bool
 	HasWon         bool
 	StartTime      time.Time
-	Message        string // Add this field
+	Message        string
 }
 
 type ScoreEntry struct {
