@@ -100,7 +100,7 @@ func ClearSession(w http.ResponseWriter) {
 
 const scoresFile = "scores.json"
 
-func SaveScore(playerName string, score int) error {
+func SaveScore(playerName string, score int, difficulty string) error {
 	scores, err := LoadScores()
 	if err != nil {
 		scores = []ScoreEntry{}
@@ -109,6 +109,7 @@ func SaveScore(playerName string, score int) error {
 	newScore := ScoreEntry{
 		PlayerName: playerName,
 		Score:      score,
+		Difficulty: difficulty,
 	}
 	scores = append(scores, newScore)
 

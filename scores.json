@@ -1,22 +1,22 @@
 [
     {
         "playerName": "malek",
-        "score": 60
+        "score": 60,
+        "difficulty": "easy"
     },
     {
         "playerName": "malek",
-        "score": 60
+        "score": 60,
+        "difficulty": "easy"
     },
     {
         "playerName": "enzo",
-        "score": 60
+        "score": 60,
+        "difficulty": "easy"
     },
     {
         "playerName": "malek",
-        "score": 60
-    },
-    {
-        "playerName": "tgtg",
-        "score": 40
+        "score": 60,
+        "difficulty": "easy"
     }
 ]

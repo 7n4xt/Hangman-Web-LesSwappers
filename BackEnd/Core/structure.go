@@ -22,4 +22,5 @@ type Session struct {
 type ScoreEntry struct {
 	PlayerName string `json:"playerName"`
 	Score      int    `json:"score"`
+	Difficulty string `json:"difficulty"`
 }
