@@ -1,10 +1,10 @@
-Crankshaft
-Chassis
-Intercooler
-Limited-slip
-Overdrive
-Synchronizer
-Venturi
-Aerodynamics
-Differential-lock
-Turbocharger
+Blower
+Bore
+Crankcase
+Cylinder-head
+Fuel-cell
+Knock sensor
+Cylinder block
+Turbo lag
+Pneumatic-valve
+Torque-converter

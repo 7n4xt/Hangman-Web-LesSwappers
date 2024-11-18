@@ -119,13 +119,13 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if sess.IsGameOver && sess.HasWon {
+	if sess.IsGameOver {
 		err := SaveScore(sess.PlayerName, sess.Score)
 		if err != nil {
 			log.Printf("Error saving score: %v", err)
 		}
 	}
-
+	
 	data := map[string]interface{}{
 		"PlayerName":      sess.PlayerName,
 		"Score":           sess.Score,
