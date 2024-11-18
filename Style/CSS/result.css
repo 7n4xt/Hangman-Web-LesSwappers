@@ -65,7 +65,7 @@ body {
 .result-info, .score {
   font-size: 1.8rem;
   color: #fff;
-  text-shadow: 0 0 10px rgba(0, 155, 255, 0.3);
+  text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
   margin: 15px 0;
   text-align: center;
 }
@@ -89,6 +89,14 @@ body {
   width: 200px;
   border-radius: 15px;
   box-shadow: #02c1b1;
+}
+
+.Total {
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 155, 255, 0.5);
+  margin: 15px 0;
+  text-align: center;
 }
 
 .button-container {

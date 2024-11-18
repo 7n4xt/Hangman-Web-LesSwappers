@@ -11,19 +11,20 @@ type Game struct {
 }
 
 type Session struct {
-    PlayerName     string
-    Difficulty     string
-    Score          int
-    TimeBonus      int
-    ErrorBonus     int
-    TotalGuesses   int
-    WrongGuesses   int
-    Attempts       int
-    WordToGuess    string
-    GuessedLetters string
-    IsGameOver     bool
-    HasWon         bool
-    StartTime      time.Time
+	PlayerName     string
+	Difficulty     string
+	Score          int
+	TimeBonus      int
+	ErrorBonus     int
+	TotalGuesses   int
+	WrongGuesses   int
+	Attempts       int
+	WordToGuess    string
+	GuessedLetters string
+	IsGameOver     bool
+	HasWon         bool
+	StartTime      time.Time
+	Message        string // Add this field
 }
 
 type ScoreEntry struct {

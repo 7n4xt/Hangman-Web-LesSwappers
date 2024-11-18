@@ -103,6 +103,7 @@ func GameHandler(w http.ResponseWriter, r *http.Request) {
 		"GameOverMessage": getGameOverMessage(sess.HasWon),
 		"WordToGuess":     sess.WordToGuess,
 		"ElapsedTime":     int(elapsedTime),
+		"Message":         sess.Message, // Add this line
 	}
 
 	renderTemplate(w, "game", data)
@@ -248,27 +249,38 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 
 		sess.TotalGuesses++
 		isCorrectGuess := false
+		message := ""
 
 		if len(guess) > 1 {
 			if guess == game.WordToGuess {
 				game.HasWon = true
 				game.IsOver = true
 				isCorrectGuess = true
+				message = "Congratulations! You guessed the word correctly!"
 			} else {
 				game.AttemptsLeft -= 2
 				sess.WrongGuesses++
+				message = "Wrong word! You lost 2 attempts."
 				if game.AttemptsLeft <= 0 {
 					game.AttemptsLeft = 0
 					game.IsOver = true
 				}
 			}
 		} else {
-			isCorrectGuess = strings.Contains(game.WordToGuess, guess)
-			if !isCorrectGuess {
-				sess.WrongGuesses++
+			if containsLetter(guessedLetters, guess) {
+				message = "You already guessed this letter!"
+			} else {
+				isCorrectGuess = strings.Contains(game.WordToGuess, guess)
+				if isCorrectGuess {
+					message = "Good guess! The letter '" + guess + "' is in the word."
+				} else {
+					message = "Wrong guess! The letter '" + guess + "' is not in the word."
+					sess.WrongGuesses++
+				}
+				game.GuessLetter(guess)
 			}
-			game.GuessLetter(guess)
 		}
+
 		baseScore := 0
 		timeBonus := 0
 		errorBonus := 0
@@ -294,6 +306,7 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 			IsGameOver:     game.IsOver,
 			HasWon:         game.HasWon,
 			StartTime:      sess.StartTime,
+			Message:        message,
 		}
 
 		err = SaveSession(w, r, newSess)
@@ -306,7 +319,6 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/game", http.StatusSeeOther)
 }
-
 func calculateBaseScore(difficulty string, attemptsLeft int) int {
 	difficultyMultiplier := map[string]int{
 		"Easy":   1,

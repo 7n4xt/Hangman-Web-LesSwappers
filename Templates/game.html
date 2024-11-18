@@ -50,6 +50,11 @@
       </div>
       <h2>Guess The Word {{.PlayerName}}!</h2>
       <div class="display-word">
+        {{if .Message}}
+        <p class="message">
+          {{.Message}}
+        </p>
+        {{end}}
         <p class="word-to-guess">Word: {{range .DisplayWord}}{{.}}{{end}}</p>
         <p class="already-guessed">Guessed: {{.GuessedLetters}}</p>
       </div>
