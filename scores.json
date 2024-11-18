@@ -3,5 +3,10 @@
         "playerName": "Malek",
         "score": 1240,
         "difficulty": "Insane"
+    },
+    {
+        "playerName": "0",
+        "score": 1,
+        "difficulty": "Easy"
     }
 ]

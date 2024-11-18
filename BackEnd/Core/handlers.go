@@ -120,6 +120,7 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/game", http.StatusSeeOther)
 		return
 	}
+
 	baseScore := calculateBaseScore(sess.Difficulty, sess.Attempts)
 	timeBonus := 0
 	errorBonus := 0
@@ -128,12 +129,15 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		elapsedSeconds := int(time.Since(sess.StartTime).Seconds())
 		timeBonus = calculateTimeBonus(elapsedSeconds, sess.Difficulty)
 		errorBonus = calculateErrorScore(sess.TotalGuesses, sess.WrongGuesses, sess.Difficulty)
-		finalScore := baseScore + timeBonus + errorBonus
-		err = SaveScore(sess.PlayerName, finalScore, sess.Difficulty)
-		if err != nil {
-			log.Printf("Error saving score: %v", err)
-		}
 	}
+
+	finalScore := baseScore + timeBonus + errorBonus
+
+	err = SaveScore(sess.PlayerName, finalScore, sess.Difficulty)
+	if err != nil {
+		log.Printf("Error saving score: %v", err)
+	}
+
 	accuracy := 0.0
 	if sess.TotalGuesses > 0 {
 		accuracy = float64(sess.TotalGuesses-sess.WrongGuesses) / float64(sess.TotalGuesses) * 100
@@ -144,7 +148,7 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
 		"BaseScore":       baseScore,
 		"TimeBonus":       timeBonus,
 		"ErrorBonus":      errorBonus,
-		"TotalScore":      baseScore + timeBonus + errorBonus,
+		"TotalScore":      finalScore,
 		"TotalGuesses":    sess.TotalGuesses,
 		"WrongGuesses":    sess.WrongGuesses,
 		"Accuracy":        accuracy,
@@ -326,9 +330,13 @@ func calculateBaseScore(difficulty string, attemptsLeft int) int {
 		"Hard":   3,
 		"Insane": 4,
 	}
+
+	if attemptsLeft <= 0 {
+		return 1 * difficultyMultiplier[difficulty]
+	}
+
 	return 10 * difficultyMultiplier[difficulty] * attemptsLeft
 }
-
 func calculateTimeBonus(elapsedSeconds int, difficulty string) int {
 	difficultyMultiplier := map[string]int{
 		"Easy":   1,
