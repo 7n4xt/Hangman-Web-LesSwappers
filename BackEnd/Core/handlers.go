@@ -115,29 +115,44 @@ func ResultHandler(w http.ResponseWriter, r *http.Request) {
         http.Redirect(w, r, "/choose", http.StatusSeeOther)
         return
     }
-
     if !sess.IsGameOver {
         http.Redirect(w, r, "/game", http.StatusSeeOther)
         return
     }
+    baseScore := calculateBaseScore(sess.Difficulty, sess.Attempts)
+    timeBonus := 0
+    errorBonus := 0
 
     if sess.HasWon {
-        err = SaveScore(sess.PlayerName, sess.Score, sess.Difficulty)
+        elapsedSeconds := int(time.Since(sess.StartTime).Seconds())
+        timeBonus = calculateTimeBonus(elapsedSeconds, sess.Difficulty)
+        errorBonus = calculateErrorScore(sess.TotalGuesses, sess.WrongGuesses, sess.Difficulty)
+        finalScore := baseScore + timeBonus + errorBonus
+        err = SaveScore(sess.PlayerName, finalScore, sess.Difficulty)
         if err != nil {
             log.Printf("Error saving score: %v", err)
         }
     }
+    accuracy := 0.0
+    if sess.TotalGuesses > 0 {
+        accuracy = float64(sess.TotalGuesses-sess.WrongGuesses) / float64(sess.TotalGuesses) * 100
+    }
 
     data := map[string]interface{}{
         "PlayerName":      sess.PlayerName,
-        "Score":          sess.Score - sess.TimeBonus, 
-        "TimeBonus":      sess.TimeBonus,      
-        "TotalScore":     sess.Score,      
+        "BaseScore":       baseScore,
+        "TimeBonus":       timeBonus,
+        "ErrorBonus":      errorBonus,
+        "TotalScore":      baseScore + timeBonus + errorBonus,
+        "TotalGuesses":    sess.TotalGuesses,
+        "WrongGuesses":    sess.WrongGuesses,
+        "Accuracy":        accuracy,
         "GameOverMessage": getGameOverMessage(sess.HasWon),
         "WordToGuess":     sess.WordToGuess,
         "HasWon":          sess.HasWon,
+        "Attempts":        sess.Attempts,
+        "Difficulty":      sess.Difficulty,
     }
-
     renderTemplate(w, "result", data)
 }
 
@@ -195,6 +210,7 @@ func StartGameHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/choose", http.StatusSeeOther)
 }
+
 func GuessHandler(w http.ResponseWriter, r *http.Request) {
     sess, err := GetSession(r)
     if err != nil {
@@ -230,35 +246,48 @@ func GuessHandler(w http.ResponseWriter, r *http.Request) {
             HasWon:         sess.HasWon,
         }
 
+        sess.TotalGuesses++
+        isCorrectGuess := false
+
         if len(guess) > 1 {
             if guess == game.WordToGuess {
                 game.HasWon = true
                 game.IsOver = true
+                isCorrectGuess = true
             } else {
                 game.AttemptsLeft -= 2
+                sess.WrongGuesses++
                 if game.AttemptsLeft <= 0 {
                     game.AttemptsLeft = 0
                     game.IsOver = true
                 }
             }
         } else {
+            isCorrectGuess = strings.Contains(game.WordToGuess, guess)
+            if !isCorrectGuess {
+                sess.WrongGuesses++
+            }
             game.GuessLetter(guess)
         }
-
-        // Calculer le score et le bonus de temps si le joueur gagne
         baseScore := 0
         timeBonus := 0
+        errorBonus := 0
+        
         if game.HasWon {
             elapsedSeconds := int(time.Since(sess.StartTime).Seconds())
             baseScore = calculateBaseScore(sess.Difficulty, game.AttemptsLeft)
             timeBonus = calculateTimeBonus(elapsedSeconds, sess.Difficulty)
+            errorBonus = calculateErrorScore(sess.TotalGuesses, sess.WrongGuesses, sess.Difficulty)
         }
 
         newSess := &Session{
             PlayerName:     sess.PlayerName,
             Difficulty:     sess.Difficulty,
-            Score:          baseScore + timeBonus,
+            Score:          baseScore + timeBonus + errorBonus,
             TimeBonus:      timeBonus,
+            ErrorBonus:     errorBonus,
+            TotalGuesses:   sess.TotalGuesses,
+            WrongGuesses:   sess.WrongGuesses,
             Attempts:       game.AttemptsLeft,
             WordToGuess:    game.WordToGuess,
             GuessedLetters: strings.Join(game.GuessedLetters, ","),
@@ -310,6 +339,39 @@ func calculateTimeBonus(elapsedSeconds int, difficulty string) int {
         bonus = 25
     default:
         bonus = 10
+    }
+
+    return bonus * difficultyMultiplier[difficulty]
+}
+
+func calculateErrorScore(totalGuesses int, wrongGuesses int, difficulty string) int {
+    difficultyMultiplier := map[string]int{
+        "Easy":   1,
+        "Normal": 2,
+        "Hard":   3,
+        "Insane": 4,
+    }
+    correctGuesses := totalGuesses - wrongGuesses
+    accuracy := float64(correctGuesses) / float64(totalGuesses)
+
+    var bonus int
+    switch {
+    case accuracy >= 0.9:
+        bonus = 150
+    case accuracy >= 0.8: 
+        bonus = 100
+    case accuracy >= 0.7:
+        bonus = 50
+    case accuracy >= 0.6: 
+        bonus = 25
+    case accuracy >= 0.5: 
+        bonus = 0
+    case accuracy >= 0.4: 
+        bonus = -25
+    case accuracy >= 0.3: 
+        bonus = -50
+    default: 
+        bonus = -100
     }
 
     return bonus * difficultyMultiplier[difficulty]

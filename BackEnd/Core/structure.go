@@ -15,6 +15,9 @@ type Session struct {
     Difficulty     string
     Score          int
     TimeBonus      int
+    ErrorBonus     int
+    TotalGuesses   int
+    WrongGuesses   int
     Attempts       int
     WordToGuess    string
     GuessedLetters string
