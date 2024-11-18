@@ -101,4 +101,3 @@ func containsLetter(slice []string, letter string) bool {
 	}
 	return false
 }
-

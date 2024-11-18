@@ -1,22 +1,37 @@
 [
     {
-        "playerName": "malek",
-        "score": 60,
-        "difficulty": "easy"
+        "playerName": "Malek",
+        "score": 1040,
+        "difficulty": "Insane"
     },
     {
-        "playerName": "malek",
-        "score": 60,
-        "difficulty": "easy"
+        "playerName": "Malek",
+        "score": 280,
+        "difficulty": "Insane"
     },
     {
-        "playerName": "enzo",
-        "score": 60,
-        "difficulty": "easy"
+        "playerName": "Enzo",
+        "score": 280,
+        "difficulty": "Insane"
     },
     {
-        "playerName": "malek",
-        "score": 60,
-        "difficulty": "easy"
+        "playerName": "Malek",
+        "score": 280,
+        "difficulty": "Insane"
+    },
+    {
+        "playerName": "Enzo",
+        "score": 240,
+        "difficulty": "Insane"
+    },
+    {
+        "playerName": "Malek",
+        "score": 70,
+        "difficulty": "Easy"
+    },
+    {
+        "playerName": "Malek",
+        "score": 70,
+        "difficulty": "Easy"
     }
 ]

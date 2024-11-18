@@ -1,5 +1,7 @@
 package backend
 
+import "time"
+
 type Game struct {
 	WordToGuess    string
 	GuessedLetters []string
@@ -9,14 +11,16 @@ type Game struct {
 }
 
 type Session struct {
-	PlayerName     string
-	Difficulty     string
-	Score          int
-	Attempts       int
-	WordToGuess    string
-	GuessedLetters string
-	IsGameOver     bool
-	HasWon         bool
+    PlayerName     string
+    Difficulty     string
+    Score          int
+    TimeBonus      int
+    Attempts       int
+    WordToGuess    string
+    GuessedLetters string
+    IsGameOver     bool
+    HasWon         bool
+    StartTime      time.Time
 }
 
 type ScoreEntry struct {

@@ -9,10 +9,7 @@ import (
 	"os"
 	"sort"
 	"strings"
-)
-
-var (
-	secretKey = []byte("secret-key")
+	"time"
 )
 
 func init() {
@@ -26,6 +23,7 @@ func CreateNewSession(w http.ResponseWriter, r *http.Request, playerName, diffic
 
 	game := NewGame(difficulty)
 	guessedLettersStr := strings.Join(game.GuessedLetters, ",")
+	startTime := time.Now()
 
 	sess := &Session{
 		PlayerName:     playerName,
@@ -36,10 +34,12 @@ func CreateNewSession(w http.ResponseWriter, r *http.Request, playerName, diffic
 		GuessedLetters: guessedLettersStr,
 		IsGameOver:     false,
 		HasWon:         false,
+		StartTime:      startTime, 
 	}
 
 	return SaveSession(w, r, sess)
 }
+
 
 func GetSession(r *http.Request) (*Session, error) {
 	cookie, err := r.Cookie("hangman-session")

@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
 var templates *template.Template
@@ -66,75 +67,78 @@ func ScoreboardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GameHandler(w http.ResponseWriter, r *http.Request) {
-	sess, _ := GetSession(r)
+    sess, _ := GetSession(r)
 
-	if sess.IsGameOver {
-		http.Redirect(w, r, "/result", http.StatusSeeOther)
-		return
-	}
+    if sess.IsGameOver {
+        http.Redirect(w, r, "/result", http.StatusSeeOther)
+        return
+    }
 
-	var guessedLetters []string
-	if sess.GuessedLetters != "" {
-		guessedLetters = strings.Split(sess.GuessedLetters, ",")
-	} else {
-		guessedLetters = []string{}
-	}
+    var guessedLetters []string
+    if sess.GuessedLetters != "" {
+        guessedLetters = strings.Split(sess.GuessedLetters, ",")
+    } else {
+        guessedLetters = []string{}
+    }
 
-	game := &Game{
-		WordToGuess:    sess.WordToGuess,
-		GuessedLetters: guessedLetters,
-		AttemptsLeft:   sess.Attempts,
-		IsOver:         sess.IsGameOver,
-		HasWon:         sess.HasWon,
-	}
+    game := &Game{
+        WordToGuess:    sess.WordToGuess,
+        GuessedLetters: guessedLetters,
+        AttemptsLeft:   sess.Attempts,
+        IsOver:         sess.IsGameOver,
+        HasWon:         sess.HasWon,
+    }
 
-	displayWord := game.GetDisplayWord()
+    displayWord := game.GetDisplayWord()
+    elapsedTime := time.Since(sess.StartTime).Seconds()
 
-	data := map[string]interface{}{
-		"PlayerName":      sess.PlayerName,
-		"Score":           sess.Score,
-		"Attempts":        sess.Attempts,
-		"Difficulty":      sess.Difficulty,
-		"DisplayWord":     displayWord,
-		"GuessedLetters":  guessedLetters,
-		"GameOver":        sess.IsGameOver,
-		"GameOverMessage": getGameOverMessage(sess.HasWon),
-		"WordToGuess":     sess.WordToGuess,
-	}
+    data := map[string]interface{}{
+        "PlayerName":      sess.PlayerName,
+        "Score":           sess.Score,
+        "Attempts":        sess.Attempts,
+        "Difficulty":      sess.Difficulty,
+        "DisplayWord":     displayWord,
+        "GuessedLetters":  guessedLetters,
+        "GameOver":        sess.IsGameOver,
+        "GameOverMessage": getGameOverMessage(sess.HasWon),
+        "WordToGuess":     sess.WordToGuess,
+        "ElapsedTime":     int(elapsedTime),
+    }
 
-	renderTemplate(w, "game", data)
+    renderTemplate(w, "game", data)
 }
 
 func ResultHandler(w http.ResponseWriter, r *http.Request) {
-	sess, err := GetSession(r)
-	if err != nil {
-		log.Printf("Session error in ResultHandler: %v", err)
-		http.Redirect(w, r, "/choose", http.StatusSeeOther)
-		return
-	}
+    sess, err := GetSession(r)
+    if err != nil {
+        log.Printf("Session error in ResultHandler: %v", err)
+        http.Redirect(w, r, "/choose", http.StatusSeeOther)
+        return
+    }
 
-	if !sess.IsGameOver {
-		log.Printf("Unauthorized access to result page: game not over")
-		http.Redirect(w, r, "/game", http.StatusSeeOther)
-		return
-	}
+    if !sess.IsGameOver {
+        http.Redirect(w, r, "/game", http.StatusSeeOther)
+        return
+    }
 
-	if sess.IsGameOver {
-		err := SaveScore(sess.PlayerName, sess.Score, sess.Difficulty)
-		if err != nil {
-			log.Printf("Error saving score: %v", err)
-		}
-	}
-	
-	data := map[string]interface{}{
-		"PlayerName":      sess.PlayerName,
-		"Score":           sess.Score,
-		"GameOverMessage": getGameOverMessage(sess.HasWon),
-		"WordToGuess":     sess.WordToGuess,
-		"HasWon":          sess.HasWon,
-	}
+    if sess.HasWon {
+        err = SaveScore(sess.PlayerName, sess.Score, sess.Difficulty)
+        if err != nil {
+            log.Printf("Error saving score: %v", err)
+        }
+    }
 
-	renderTemplate(w, "result", data)
+    data := map[string]interface{}{
+        "PlayerName":      sess.PlayerName,
+        "Score":          sess.Score - sess.TimeBonus, 
+        "TimeBonus":      sess.TimeBonus,      
+        "TotalScore":     sess.Score,      
+        "GameOverMessage": getGameOverMessage(sess.HasWon),
+        "WordToGuess":     sess.WordToGuess,
+        "HasWon":          sess.HasWon,
+    }
+
+    renderTemplate(w, "result", data)
 }
 
 func RequireGameOverSession(next http.HandlerFunc) http.HandlerFunc {
@@ -192,90 +196,121 @@ func StartGameHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/choose", http.StatusSeeOther)
 }
 func GuessHandler(w http.ResponseWriter, r *http.Request) {
-	sess, err := GetSession(r)
-	if err != nil {
-		log.Printf("Session error: %v", err)
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
+    sess, err := GetSession(r)
+    if err != nil {
+        log.Printf("Session error: %v", err)
+        http.Redirect(w, r, "/", http.StatusSeeOther)
+        return
+    }
 
-	if r.Method == http.MethodPost {
-		if sess.IsGameOver {
-			http.Redirect(w, r, "/game", http.StatusSeeOther)
-			return
-		}
+    if r.Method == http.MethodPost {
+        if sess.IsGameOver {
+            http.Redirect(w, r, "/game", http.StatusSeeOther)
+            return
+        }
 
-		guess := strings.ToLower(r.FormValue("guess"))
-		if guess == "" {
-			http.Redirect(w, r, "/game", http.StatusSeeOther)
-			return
-		}
+        guess := strings.ToLower(r.FormValue("guess"))
+        if guess == "" {
+            http.Redirect(w, r, "/game", http.StatusSeeOther)
+            return
+        }
 
-		var guessedLetters []string
-		if sess.GuessedLetters != "" {
-			guessedLetters = strings.Split(sess.GuessedLetters, ",")
-		} else {
-			guessedLetters = []string{}
-		}
+        var guessedLetters []string
+        if sess.GuessedLetters != "" {
+            guessedLetters = strings.Split(sess.GuessedLetters, ",")
+        } else {
+            guessedLetters = []string{}
+        }
 
-		game := &Game{
-			WordToGuess:    sess.WordToGuess,
-			GuessedLetters: guessedLetters,
-			AttemptsLeft:   sess.Attempts,
-			IsOver:         sess.IsGameOver,
-			HasWon:         sess.HasWon,
-		}
+        game := &Game{
+            WordToGuess:    sess.WordToGuess,
+            GuessedLetters: guessedLetters,
+            AttemptsLeft:   sess.Attempts,
+            IsOver:         sess.IsGameOver,
+            HasWon:         sess.HasWon,
+        }
 
-		if len(guess) > 1 {
-			if guess == game.WordToGuess {
+        if len(guess) > 1 {
+            if guess == game.WordToGuess {
+                game.HasWon = true
+                game.IsOver = true
+            } else {
+                game.AttemptsLeft -= 2
+                if game.AttemptsLeft <= 0 {
+                    game.AttemptsLeft = 0
+                    game.IsOver = true
+                }
+            }
+        } else {
+            game.GuessLetter(guess)
+        }
 
-				game.HasWon = true
-				game.IsOver = true
-			} else {
-				game.AttemptsLeft -= 2
-				if game.AttemptsLeft <= 0 {
-					game.AttemptsLeft = 0
-					game.IsOver = true
-				}
-			}
-		} else {
-			game.GuessLetter(guess)
-		}
+        // Calculer le score et le bonus de temps si le joueur gagne
+        baseScore := 0
+        timeBonus := 0
+        if game.HasWon {
+            elapsedSeconds := int(time.Since(sess.StartTime).Seconds())
+            baseScore = calculateBaseScore(sess.Difficulty, game.AttemptsLeft)
+            timeBonus = calculateTimeBonus(elapsedSeconds, sess.Difficulty)
+        }
 
-		newSess := &Session{
-			PlayerName:     sess.PlayerName,
-			Difficulty:     sess.Difficulty,
-			Score:          sess.Score,
-			Attempts:       game.AttemptsLeft,
-			WordToGuess:    game.WordToGuess,
-			GuessedLetters: strings.Join(game.GuessedLetters, ","),
-			IsGameOver:     game.IsOver,
-			HasWon:         game.HasWon,
-		}
+        newSess := &Session{
+            PlayerName:     sess.PlayerName,
+            Difficulty:     sess.Difficulty,
+            Score:          baseScore + timeBonus,
+            TimeBonus:      timeBonus,
+            Attempts:       game.AttemptsLeft,
+            WordToGuess:    game.WordToGuess,
+            GuessedLetters: strings.Join(game.GuessedLetters, ","),
+            IsGameOver:     game.IsOver,
+            HasWon:         game.HasWon,
+            StartTime:      sess.StartTime,
+        }
 
-		if game.HasWon {
-			newSess.Score += calculateScore(sess.Difficulty, game.AttemptsLeft)
-		}
+        err = SaveSession(w, r, newSess)
+        if err != nil {
+            log.Printf("Error saving session: %v", err)
+            http.Error(w, "Error saving session", http.StatusInternalServerError)
+            return
+        }
+    }
 
-		err = SaveSession(w, r, newSess)
-		if err != nil {
-			log.Printf("Error saving session: %v", err)
-			http.Error(w, "Error saving session", http.StatusInternalServerError)
-			return
-		}
-	}
-
-	http.Redirect(w, r, "/game", http.StatusSeeOther)
+    http.Redirect(w, r, "/game", http.StatusSeeOther)
 }
 
-func calculateScore(difficulty string, attemptsLeft int) int {
-	baseScore := 10
-	difficultyMultiplier := map[string]int{
-		"Easy":   1,
-		"Normal": 2,
-		"Hard":   3,
-		"Insane": 4,
-	}
+func calculateBaseScore(difficulty string, attemptsLeft int) int {
+    difficultyMultiplier := map[string]int{
+        "Easy":   1,
+        "Normal": 2,
+        "Hard":   3,
+        "Insane": 4,
+    }
+    return 10 * difficultyMultiplier[difficulty] * attemptsLeft
+}
 
-	return baseScore * difficultyMultiplier[difficulty] * attemptsLeft
+func calculateTimeBonus(elapsedSeconds int, difficulty string) int {
+    difficultyMultiplier := map[string]int{
+        "Easy":   1,
+        "Normal": 2,
+        "Hard":   3,
+        "Insane": 4,
+    }
+
+    var bonus int
+    switch {
+    case elapsedSeconds <= 10:
+        bonus = 200
+    case elapsedSeconds <= 20:
+        bonus = 150
+    case elapsedSeconds <= 30:
+        bonus = 100
+    case elapsedSeconds <= 45:
+        bonus = 50
+    case elapsedSeconds <= 60:
+        bonus = 25
+    default:
+        bonus = 10
+    }
+
+    return bonus * difficultyMultiplier[difficulty]
 }
