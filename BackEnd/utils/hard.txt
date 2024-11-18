@@ -1,10 +1,10 @@
-Crankshaft
-Chassis
-Intercooler
-Limited-slip
-Overdrive
-Synchronizer
-Venturi
-Aerodynamics
-Differential-lock
+Carburetor
+Driveshaft
 Turbocharger
+Alternator
+Differential
+Fuel Injector
+Transmission
+Catalytic Converter
+Chassis
+Camshaft

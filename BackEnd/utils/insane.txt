@@ -1,10 +1,10 @@
-Blower
-Bore
-Crankcase
-Cylinder-head
-Fuel-cell
-Knock sensor
-Cylinder block
-Turbo lag
-Pneumatic-valve
-Torque-converter
+Supercharger
+Thermostat
+Crankshaft
+Monocoque
+Aerodynamics
+Torque Converter
+Anti-Lock Brakes
+Continuously Variable Transmission (CVT)
+Limited Slip Differential
+Sequential Manual Transmission
